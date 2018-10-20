@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 set -e
 VERSION=$1
+IMAGE_NAME=titilambert/factorio:${VERSION}
 
 if [ -z ${VERSION} ]
 then
     echo "Packages an arbitrary Factorio release."
     echo
-    echo "Usage: ./download_release.sh 0.14.15"
+    echo "Usage: $0 0.14.15"
     exit 1
 fi
 
@@ -22,14 +23,14 @@ then
 fi
 
 docker build --build-arg factorio_version=${VERSION} \
-    -t quay.io/games_on_k8s/factorio:${VERSION} .
-docker run --rm -it quay.io/games_on_k8s/factorio:${VERSION}
+    -t ${IMAGE_NAME} .
+docker run --rm -it ${IMAGE_NAME}
 
 while true; do
     read -p "Publish the built image? (y/n) " yn
     case $yn in
         [Yy]* )
-            docker push quay.io/games_on_k8s/factorio:${VERSION}
+            docker push ${IMAGE_NAME}
             break;;
         [Nn]* )
             exit;;
@@ -37,3 +38,5 @@ while true; do
             echo "Please answer y or n.";;
     esac
 done
+
+rm -f factorio_headless_x64_*

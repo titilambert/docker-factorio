@@ -1,5 +1,5 @@
-FROM ubuntu:16.04
-MAINTAINER Greg Taylor <gtaylor@gc-taylor.com>
+FROM debian:buster-20181011-slim
+MAINTAINER Thibault Cohen <titilambert@gmail.com>
 
 RUN apt-get update && apt-get dist-upgrade -y && \
     apt install -y python3 xz-utils && apt-get clean
